@@ -1,5 +1,12 @@
 # Open/clone project
 p() {
+  # Custom aliases
+  case $1 in
+    dotfiles)
+      cd ~/dotfiles
+      exit
+      ;;
+  esac
   if [[ -d ~/p/$1 ]]; then
     cd ~/p/$1
   else
