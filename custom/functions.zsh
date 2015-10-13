@@ -4,7 +4,7 @@ p() {
   case $1 in
     dotfiles)
       cd ~/dotfiles
-      exit
+      return
       ;;
   esac
   if [[ -d ~/p/$1 ]]; then
