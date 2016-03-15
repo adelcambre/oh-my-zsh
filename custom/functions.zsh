@@ -7,11 +7,18 @@ p() {
       return
       ;;
   esac
-  if [[ -d ~/p/$1 ]]; then
-    cd ~/p/$1
+  user=`dirname $1`
+  repo=`basename $1`
+
+  if [[ "$user" = "." ]]; then
+    user="heroku"
+  fi
+
+  if [[ -d ~/p/$repo ]]; then
+    cd ~/p/$repo
   else
     cd ~/p
-    git clone git@github.com:github/$1.git && cd ~/p/$1
+    git clone git@github.com:$user/$repo.git && cd ~/p/$repo
   fi
 }
 
