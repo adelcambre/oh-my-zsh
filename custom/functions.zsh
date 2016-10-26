@@ -1,9 +1,21 @@
 # Open/clone project
 p() {
+  if [[ $# -eq 0 ]]; then
+    cd ~/p
+    return
+  elif [[ $# -gt 1 ]]; then
+    echo "Usage: p [<repo>|<user/repo>]"
+    return 1
+  fi
+
+  cd $(project_dir "$@")
+}
+
+project_dir() {
   # Custom aliases
   case $1 in
     dotfiles)
-      cd ~/dotfiles
+      echo ~/dotfiles
       return
       ;;
   esac
@@ -15,10 +27,28 @@ p() {
   fi
 
   if [[ -d ~/p/$repo ]]; then
-    cd ~/p/$repo
+    echo ~/p/$repo
   else
     cd ~/p
-    git clone git@github.com:$user/$repo.git && cd ~/p/$repo
+    git clone git@github.com:$user/$repo.git && echo ~/p/$repo
+  fi
+}
+
+# Goto symlink in gopath for go projects
+g() {
+  if [[ $# -eq 0 ]]; then
+    project_dir=$(greadlink -f $(pwd))
+  else
+    project_dir=$(greadlink -f $(project_dir "$@"))
+  fi
+
+  go_proj_dir=$(gfind "$(greadlink -f $GOPATH)" -lname $project_dir)
+
+  if [[ "$go_proj_dir" = "" ]]; then
+    echo "Not a go project (or no symlink) $1"
+    return 1
+  else
+    cd $go_proj_dir
   fi
 }
 
