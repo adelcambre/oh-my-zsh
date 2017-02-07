@@ -60,3 +60,7 @@ f() {
     find $2 -name "*$1*"
   fi
 }
+
+samldecode () {
+    echo $1 | base64 --decode | xmllint --format -
+}
