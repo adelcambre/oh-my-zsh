@@ -1,7 +1,7 @@
 # Open/clone project
 p() {
   if [[ $# -eq 0 ]]; then
-    cd ~/p
+    cd ~/heroku
     return
   elif [[ $# -gt 1 ]]; then
     echo "Usage: p [<repo>|<user/repo>]"
@@ -26,11 +26,11 @@ project_dir() {
     user="heroku"
   fi
 
-  if [[ -d ~/p/$repo ]]; then
-    echo ~/p/$repo
+  if [[ -d ~/heroku/$repo ]]; then
+    echo ~/heroku/$repo
   else
-    cd ~/p
-    git clone git@github.com:$user/$repo.git && echo ~/p/$repo
+    cd ~/heroku
+    git clone git@github.com:$user/$repo.git && echo ~/heroku/$repo
   fi
 }
 
@@ -63,4 +63,19 @@ f() {
 
 samldecode () {
     echo $1 | base64 --decode | xmllint --format -
+}
+
+api-console() {
+  if [[ $# -eq 1 ]]; then
+    cloud=$1
+  else
+    cloud="production"
+  fi
+
+  if [[ $cloud = "prod" ]]; then
+    cloud="production"
+  fi
+
+  echo "Cloud: $cloud"
+  lima run:inside ${cloud}:api slack.1 bin/console
 }
