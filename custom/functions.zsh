@@ -1,7 +1,13 @@
+if [[ `hostname` == st-* ]]; then
+  base_project_dir="$HOME/stripe"
+else
+  base_project_dir="$HOME/p"
+fi
+
 # Open/clone project
 p() {
   if [[ $# -eq 0 ]]; then
-    cd ~/heroku
+    cd $base_project_dir
     return
   elif [[ $# -gt 1 ]]; then
     echo "Usage: p [<repo>|<user/repo>]"
@@ -12,6 +18,7 @@ p() {
 }
 
 project_dir() {
+  # base_project_dir=$(base_proj_dir)
   # Custom aliases
   case $1 in
     dotfiles)
@@ -23,14 +30,14 @@ project_dir() {
   repo=`basename $1`
 
   if [[ "$user" = "." ]]; then
-    user="heroku"
+    user="adelcambre"
   fi
 
-  if [[ -d ~/heroku/$repo ]]; then
-    echo ~/heroku/$repo
+  if [[ -d $base_project_dir/$repo ]]; then
+    echo $base_project_dir/$repo
   else
-    cd ~/heroku
-    git clone git@github.com:$user/$repo.git && echo ~/heroku/$repo
+    cd $base_project_dir
+    git clone git@github.com:$user/$repo.git && echo $base_project_dir/$repo
   fi
 }
 
@@ -63,19 +70,4 @@ f() {
 
 samldecode () {
     echo $1 | base64 --decode | xmllint --format -
-}
-
-api-console() {
-  if [[ $# -eq 1 ]]; then
-    cloud=$1
-  else
-    cloud="production"
-  fi
-
-  if [[ $cloud = "prod" ]]; then
-    cloud="production"
-  fi
-
-  echo "Cloud: $cloud"
-  lima run:inside ${cloud}:api slack.1 bin/console
 }
