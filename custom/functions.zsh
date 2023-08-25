@@ -41,23 +41,23 @@ project_dir() {
   fi
 }
 
-# Goto symlink in gopath for go projects
-g() {
-  if [[ $# -eq 0 ]]; then
-    project_dir=$(greadlink -f $(pwd))
-  else
-    project_dir=$(greadlink -f $(project_dir "$@"))
-  fi
+# # Goto symlink in gopath for go projects
+# g() {
+#   if [[ $# -eq 0 ]]; then
+#     project_dir=$(greadlink -f $(pwd))
+#   else
+#     project_dir=$(greadlink -f $(project_dir "$@"))
+#   fi
 
-  go_proj_dir=$(gfind "$(greadlink -f $GOPATH)" -lname $project_dir)
+#   go_proj_dir=$(gfind "$(greadlink -f $GOPATH)" -lname $project_dir)
 
-  if [[ "$go_proj_dir" = "" ]]; then
-    echo "Not a go project (or no symlink) $1"
-    return 1
-  else
-    cd $go_proj_dir
-  fi
-}
+#   if [[ "$go_proj_dir" = "" ]]; then
+#     echo "Not a go project (or no symlink) $1"
+#     return 1
+#   else
+#     cd $go_proj_dir
+#   fi
+# }
 
 # Find files matching name
 f() {
