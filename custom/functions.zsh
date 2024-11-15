@@ -62,9 +62,9 @@ project_dir() {
 # Find files matching name
 f() {
   if [[ $# -eq 1 ]]; then
-    find . -name "*$1*" -not -ipath '*.git*' -not -ipath '*/vendor/gems/*'
+    find . -iname "*$1*" -not -ipath '*.git*' -not -ipath '*/vendor/gems/*'
   elif; then
-    find $2 -name "*$1*"
+    find $2 -iname "*$1*"
   fi
 }
 
